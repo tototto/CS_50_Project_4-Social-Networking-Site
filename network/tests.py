@@ -6,6 +6,7 @@ from .models import *
 from datetime import datetime
 
 # Create your tests here.
+# Tests will be used for Continuous Integration
 
 # This is a Test Suite
 class NetworkAppTest(TestCase):
