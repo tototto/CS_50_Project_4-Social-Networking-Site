@@ -1,0 +1,22 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<style>
+    .bd-example {
+    padding: 1.5rem;
+    margin-right: 0;
+    margin-left: 0;
+    border-width: .2rem ;
+}
+</style>
+    <h1> Create Post </h1>
+
+    <form action="{% url 'createPost' %}" method="POST">
+        <div class="form-group bd-example">
+            {% csrf_token %}
+            <label for="NewPost"><h4>New Post</h4></label>
+            <textarea class="form-control" id="NewPost" name="NewPost" rows="3"></textarea>
+            <button type="submit" class="btn btn-outline-primary">Post</button>
+        </div>
+    </form>
+{% endblock %}

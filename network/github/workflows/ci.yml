@@ -1,0 +1,12 @@
+name: Continuous Integration
+on: push
+
+jobs:
+  test_project:
+    run-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Django's Unit Test
+      run:
+        pip3 install --user django
+        python3 manage.py test

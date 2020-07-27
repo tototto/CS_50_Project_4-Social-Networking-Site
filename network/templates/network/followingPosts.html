@@ -1,0 +1,15 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<h1 class="header">Post of user's that {{ user.username }} is following:</h1>
+    {% for EachUserSetOfPost in AllFollowingUsersPost %}
+        {% for EachPost in EachUserSetOfPost %}
+            <ul class="post">
+                <li id="postTitle"><a href="{% url 'profileUser' EachPost.User %}"><h4>{{ EachPost.User }}</h4></a></li>
+                <li id="postContent">{{ EachPost.PostContent }}</li>
+                <li id="postDateTime">{{ EachPost.DateTime }}</li>
+                <i class="fa fa-heart"> <li id="postLike">{{ EachPost.Like }}</li> </i>
+            </ul>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

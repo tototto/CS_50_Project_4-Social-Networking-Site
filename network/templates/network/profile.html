@@ -1,0 +1,75 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    <h1 class="header"> All of {{ ProfileUser }} Post </h1>
+    <p id="profileUserID" hidden>{{ ProfileUser }}</p>
+    <div class="card">
+        <div class="card-header">
+            <h5>Follower & Following</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Following: {{UserFollowings}} Followers: {{UserFollowers}}</p>
+          {% if user.username != ProfileUser %}
+            <form action="{%url 'profileUser' ProfileUser %}">
+                {% csrf_token %}
+                <!-- <button type="submit" class="btn btn-primary" id="FollowBtn" name="Following" onclick="event.preventDefault();" value="{{ ProfileUser }}"> -->
+                <button type="submit" class="btn btn-primary" id="FollowBtn" name="Following" value="{{ ProfileUser }}">
+                    {% if FollowingStatus %}
+                        Unfollow
+                    {% else %}
+                        Follow
+                    {% endif %}
+                </button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% for EachPost in AllPosts %}
+        <ul class="post">
+            <li id="postTitle"><h4>{{ EachPost.User }}</h4></li>
+            <li id="postContent">{{ EachPost.PostContent }}</li>
+            <li id="postDateTime">{{ EachPost.DateTime }}</li>
+            <i class="fa fa-heart"> <li id="postLike">{{ EachPost.Like }}</li> </i>
+        </ul>
+    {% endfor %}
+    
+    <script>
+        // Js code For Flicking FOLLOW Text in button to UNFOLLOW Text
+        // Implemented API for fun
+        document.addEventListener("DOMContentLoaded", ()=>{
+            document.querySelector('#FollowBtn').addEventListener('click', ()=>{
+
+                var profileUser = document.querySelector('#profileUserID').innerHTML;
+                var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+                if(document.querySelector('#FollowBtn').innerHTML != "Unfollow"){
+                    document.querySelector('#FollowBtn').innerHTML = "Unfollow";
+                }
+                else{
+                    document.querySelector('#FollowBtn').innerHTML = "Follow";
+                }
+                // Make API Call to Follow / Unfollow user 
+                fetch('/followUser', {
+                                        method: 'POST',
+                                        mode: 'same-origin',
+                                        headers: {
+                                                    'Accept': 'application/json',
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRFToken': csrfToken // To pass Django's Form CSRF validation check
+                                                 },
+                                        body: JSON.stringify({
+                                                                following: profileUser,
+                                                             })
+                                    })
+                .then(response => response.json())
+                .then(result => {
+                                    // Print result
+                                    console.log(result);
+                                });
+                
+            });
+        })
+    </script>
+
+{% endblock %}
